@@ -55,7 +55,7 @@ if num_nodes > 1
     f = f(newIndexes);
 end
 
-weights = getWeights(a, b, nodes, 0);
+weights = getWeights(a, b, nodes, 2);
 integralValue = 0;
 for j = 1 : num_nodes
     integralValue = integralValue + weights(j) * f(j);

@@ -2,51 +2,37 @@
 % nodi x0; ... ; xn in [a; b] implementa e graficizza (per f(x) = x sin(x)) 
 % la regola dei trapezi e ne studia il grado di precisione.
 
-% IL GRADO DI PRECISIONE é IL MIN DEI SINGOLI GRADI?
+% PRECISAZIONE: "graficizza" implica che venga costruita la funzione dalla
+%               quale viene calcolato l'integrale numerico
+
+% PRECISAZIONE: "studia il grado di precisione" implica di verificare che 
+%               l'integrale numerico sia uguale (con una certa tolleranza) 
+%               a quello esatto, calcolati rispetto alle basi (1, x, x^2...)
+%               e in [a, b].
+
+% OBIETTIVO: mostrare che la convergenza al crescere del g.d.p. è solo una 
+%            condizione sufficiente.
 
 % constants
 a = -pi/2;
 b = pi/2;
 n = 1;
-m = 2;
+m = 3;
 f = @(x) x .* sin(x);
+nameFunction = strrep(char(f), '@(x)', ' ');
+nameFunction = erase(nameFunction, '.');
 
 % calculate real integral
 realIntegralValue = integral(f, a, b);
-disp(strcat('For ', func2str(f), ' in [', int2str(a), ',', int2str(b), ']'));
+disp(strcat('For ', nameFunction, ' in [', int2str(a), ',', int2str(b), ']'));
 disp(strcat('The real integral value is: ', int2str(realIntegralValue), '.'));
-
 
 k = 0 : m * n;
 nodes = a + k * (b - a) / (m * n);
 funcSamples = f(nodes);
-plotPoints = getPlotPoints(a, b, length(nodes));
-plotPoints = unique([plotPoints, nodes]);
 
-% call close Newton-Cotes formula and compose values as sum
-integralValue = 0;
-interpolationValues = zeros(1, length(plotPoints));
-v = zeros(1, m);
-for i = 1 : m
-    minIndex = (i - 1) * n + 1;
-    maxIndex = i * n + 1;
-    
-    integralValue = integralValue + NewtonCotes(nodes(minIndex), nodes(maxIndex), ...
-                                    nodes(minIndex : maxIndex), funcSamples(minIndex : maxIndex));
-                                
-    % call lagrangeBasis for interpolation
-    indexes = find(plotPoints >= nodes(minIndex) & plotPoints < nodes(maxIndex));
-    if i == m
-       indexes = [indexes, find(plotPoints == nodes(maxIndex))];
-    end
-    for j = 1 : n + 1
-        baseValues = lagrangeBasis(n + 1, nodes(minIndex : maxIndex), j, plotPoints(indexes));
-        interpolationValues(indexes) = interpolationValues(indexes) + baseValues * funcSamples(minIndex - 1 + j);
-    end
-    
-    % study of degree of preciseness
-    v(i) = getDegreeOfPreciseness(nodes(minIndex), nodes(maxIndex), nodes(minIndex : maxIndex));
-end
+% call composite Newton-Cotes formula
+[integralValue, degree, plotPoints, interpolationValues] = compositeNewtonCotes(n, m, nodes, funcSamples, a, b);
 
 % calculate real function values
 funcValues = f(plotPoints);
@@ -54,7 +40,7 @@ funcValues = f(plotPoints);
 % show integral value
 disp(strcat('For n=', int2str(n), '(', int2str(n+1), ...
             ' nodes used), integral calculated is: ', num2str(integralValue), ...
-            ' and degree of preciseness is: ', int2str(min(v)), '.'));
+            ' and degree of preciseness is: ', int2str(degree), '.'));
 
 % draw functions
 figure;
@@ -71,8 +57,9 @@ ar2.FaceAlpha = 0.3;
 ar2.EdgeAlpha = 0;
 hold on;
 plot(nodes, funcSamples, 'o');
+
 title(strcat('Integral approximation with trapezoidal composite formula and ', int2str(m), ' sub-intervals.'));
-legend(func2str(f), strcat('Real integral= ', num2str(realIntegralValue)), ...
+legend(nameFunction, strcat('Real integral= ', num2str(realIntegralValue)), ...
         'interpolation function', strcat('Numerical integral= ', num2str(integralValue)),...
         strcat('points= ', int2str(m*n+1)));
 xlabel('x');
