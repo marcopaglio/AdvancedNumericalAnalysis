@@ -28,6 +28,8 @@ for i = 1 : length(F)
     a = A(i);
     b = B(i);
     f = F{i};
+    nameFunction = strrep(char(f), '@(x)', ' ');
+    nameFunction = erase(nameFunction, '.');
     
     % calculate real integral
     realIntegralValue = integral(f, a, b);
@@ -63,7 +65,8 @@ for i = 1 : length(F)
     plot(n_values, R_2n1_values, 'o', 'lineWidth', 1.5);
     hold on;
     plot(n_values, realErrorValues, 'x', 'lineWidth', 1.5);
-    title(strcat('Integral approximation of ', func2str(f), ' in [', num2str(a), ',', num2str(b),...
+    
+    title(strcat('Integral approximation of ', nameFunction, ' in [', num2str(a), ',', num2str(b),...
                  '] with trapezoidal composite formula and errors.'));
     legend(strcat('Real integral= ', num2str(realIntegralValue)), ...
                   'S_{n+1}', 'S_{2n+1}', 'R_{2n+1}', 'Real errors');

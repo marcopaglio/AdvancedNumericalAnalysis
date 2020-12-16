@@ -13,8 +13,8 @@ if class(f) ~= 'function_handle'
     error('');
 end
 
-if n ~= floor(n) 
-    error('Input n must be a integer value.');
+if n ~= floor(n) || n < 1
+    error('Input n must be a integer value greater than 1.');
 end
 if mod(n, 2) ~= 0
     error('Input n must be even.');
@@ -25,6 +25,10 @@ if groupBy ~= floor(groupBy)
 end
 if groupBy < 2
     error('Input groupBy cannot be lower than 2.');
+end
+
+if tau < 0
+    error('Tollerance tau cannot be a negative value.');
 end
 
 m_n1 = n / (2 * (groupBy - 1));

@@ -2,17 +2,27 @@
 % nodi x0;...; xn in [a; b] implementa e graficizza le prime 2 formule di 
 % Newton-Cotes di tipo aperto e ne studia il grado di precisione n<=v<=2n+1.
 
+% PRECISAZIONE: "graficizza" implica che venga costruita la funzione dalla
+%               quale viene calcolato l'integrale numerico
+
+% PRECISAZIONE: "studia il grado di precisione" implica di verificare che 
+%               l'integrale numerico sia uguale (con una certa tolleranza) 
+%               a quello esatto, calcolati rispetto alle basi (1, x, x^2...)
+%               e in [a, b].
+
 % constants
 a = 2;
 b = 9;
 maxN = 2;
 f = @(x) 3 * x .^ 4 - 12 * x .^ 3 + x - 1;
 % f = @(x) (x .^ 3 - 2 * x) / ((x - a) * (x - b));
+nameFunction = strrep(char(f), '@(x)', ' ');
+nameFunction = erase(nameFunction, '.');
 
 
 % calculate real integral
 realIntegralValue = integral(f, a, b);
-disp(strcat('For ', func2str(f), ' in [', int2str(a), ',', int2str(b), ']'));
+disp(strcat('For ', nameFunction, ' in [', int2str(a), ',', int2str(b), ']'));
 disp(strcat('The real integral value is: ', int2str(realIntegralValue), '.'));
 
 for n = 1 : maxN
@@ -25,6 +35,14 @@ for n = 1 : maxN
     % call close Newton-Cotes formula
     integralValue = NewtonCotes(a, b, nodes, funcSamples);
     
+    % study of degree of preciseness
+    v = getDegreeOfPreciseness(a, b, nodes);    
+    
+    % show integral value
+    disp(strcat('For n=', int2str(n+1), ' (', int2str(n+2), ' nodes and ', int2str(n), ...
+                ' used), integral calculated is: ', num2str(integralValue), ...
+                ' and degree of preciseness is: ', int2str(v), '.'));    
+            
     % call lagrangeBasis for interpolation
     interpolationValues = zeros(1, length(plotPoints));
     for j = 1 : n
@@ -32,16 +50,8 @@ for n = 1 : maxN
         interpolationValues = interpolationValues + baseValues * funcSamples(j);
     end
     
-    % calculate real function values
+    % evaluate real function
     funcValues = f(plotPoints);
-    
-    % study of degree of preciseness
-    v = getDegreeOfPreciseness(a, b, nodes);
-    
-    % show integral value
-    disp(strcat('For n=', int2str(n+1), ' (', int2str(n+2), ' nodes and ', int2str(n), ...
-                ' used), integral calculated is: ', num2str(integralValue), ...
-                ' and degree of preciseness is: ', int2str(v), '.'));
 
     % draw functions
     figure;
@@ -58,8 +68,9 @@ for n = 1 : maxN
     ar2.EdgeAlpha = 0;
     hold on;
     plot(nodes, funcSamples, 'o');
-    title(strcat('Integral approximation with open Newton-Cotes and ', int2str(n-1), ' nodes.'));
-    legend(func2str(f), strcat('Real integral= ', num2str(realIntegralValue)), ...
+    
+    title(strcat('Integral approximation with open Newton-Cotes and ', int2str(n), ' nodes.'));
+    legend(nameFunction, strcat('Real integral= ', num2str(realIntegralValue)), ...
             'interpolation function', strcat('Numerical integral= ', num2str(integralValue)), 'points');
     xlabel('x');
     

@@ -1,6 +1,8 @@
 function [weights] = getWeights(a, b, nodes, type)
 % type == 0 => use trapz to approsimate integral of Lagrange basis
 %      == 1 => use Method  of  undetermined  coefficients 
+%      == 2 => use 1 until maxDimVander, then use 0
+
 % check inputs
 n = length(nodes);
 if n < 1
@@ -35,8 +37,11 @@ end
 
 switch type
     case 0
+        % WARNING %
+        % Values resulting from this method 
+        % is not really correct with n small
         plotPoints = getPlotPoints(a, b, n);
-        plotPoints = unique([plotPoints, nodes]);
+        plotPoints = unique([plotPoints, nodes, a, b]);
         weights = zeros(1, n);
         for j = 1 : n
             baseValues = lagrangeBasis(n, nodes, j, plotPoints);
@@ -44,6 +49,9 @@ switch type
         end
         
     case 1
+        % WARNING %
+        % Values resulting from this method 
+        % is not really correct with n big
         % resolve Aw=c
         vanderNodes = vander(nodes);
         
@@ -55,6 +63,27 @@ switch type
         end
         
         weights = getLinearSystemSolution(A, c);
+        
+    case 2
+        maxDimVander = 10;
+        if n <= maxDimVander
+            vanderNodes = vander(nodes);
+            A = zeros(n);
+            c = zeros(n, 1);
+            for k = 1 : n
+                A(k, 1: n) = vanderNodes(1: n, n + 1 - k);
+                c(k) = (b ^ k - a ^ k) / k;
+            end
+            weights = getLinearSystemSolution(A, c);
+        else
+            plotPoints = getPlotPoints(a, b, n);
+            plotPoints = unique([plotPoints, nodes, a, b]);
+            weights = zeros(1, n);
+            for j = 1 : n
+                baseValues = lagrangeBasis(n, nodes, j, plotPoints);
+                weights(j) = trapz(plotPoints, baseValues);
+            end
+        end
         
     otherwise
         errorText = compose("Type inserted is not valid. \nPlease, choose between " + ...

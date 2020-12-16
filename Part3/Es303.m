@@ -2,6 +2,9 @@
 % 2 e si studi con un grafico il comportamento dei pesi al variare di 
 % n = 2; ... ; 20.
 
+% OBIETTIVO: mostrare graficamente l'alternanza dei segni dei pesi al
+%            crescere di n
+
 % constants
 maxN = 20;
 a = 0;
@@ -18,6 +21,6 @@ for n = 2 : maxN
     title(strcat('Weights of quadrature formulas for n=', int2str(n)));
     xlabel('w_{i}');
     ylabel('weights value');
-
-    hold off;
 end
+
+hold off;

@@ -1,6 +1,8 @@
 % Si esegua uno studio (tramite l'Help in linea) delle functions offerte
 % dal Matlab per il calcolo approssimato di un integrale definito.
 
+% OBIETTIVO: panoramica sulle funzioni native del Matlab
+
 help integral;
 % integral  Numerically evaluate integral.
 %     Q = integral(FUN,A,B) approximates the integral of function FUN from A
