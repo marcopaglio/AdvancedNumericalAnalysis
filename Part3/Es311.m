@@ -29,4 +29,4 @@ disp(strcat('For n=', int2str(n), ' and tau=', num2str(tau),','));
 disp(strcat('Sum of S_{', int2str(n+1), '} is: ', num2str(S_2n1), '.'));
 disp(strcat('Sum of S_{', int2str(n/2+1), '} is: ', num2str(S_n1), '.'));
 disp(strcat("I(f) is: ", num2str(I), "."));
-disp(strcat('Error max in sub-intervals is: ', num2str(maxError), '.'));
+disp(strcat('Max error in each sub-intervals is: ', num2str(maxError), '.'));

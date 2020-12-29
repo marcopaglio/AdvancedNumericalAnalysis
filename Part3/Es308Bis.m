@@ -13,8 +13,7 @@
 % OBIETTIVO: mostrare che la convergenza al crescere del g.d.p. è solo una 
 %            condizione sufficiente.
 
-% VERSIONE: utilizza compositeNewtonCotes valida per ogni n, m e con
-%           formule aperte e chiuse di Newton-Cotes.
+% VERSIONE: utilizza formula composita di Cavalieri-Simpson esplicita. 
 
 % constants
 a = -pi/2;
@@ -34,8 +33,34 @@ k = 0 : m * n;
 nodes = a + k * (b - a) / (m * n);
 funcSamples = f(nodes);
 
-% call composite Newton-Cotes formula
-[integralValue, degree, plotPoints, interpolationValues] = compositeNewtonCotes(n, m, nodes, funcSamples, a, b);
+% calculate trapezoidal composite formula
+integralValue = funcSamples(1) + funcSamples(n * m + 1);
+integralValue = integralValue + 4 * sum(funcSamples(2 : 2 : n * m));
+integralValue = integralValue + 2 * sum(funcSamples(3 : 2 : n * m));
+integralValue = integralValue * (b - a) / (3 * n * m);
+
+plotPoints = getPlotPoints(a, b, length(nodes));
+plotPoints = unique([plotPoints, nodes]);
+interpolationValues = zeros(1, length(plotPoints));
+v = zeros(1, m);
+for i = 1 : m
+    minIndex = (i - 1) * n + 1;
+    maxIndex = i * n + 1;
+
+    % call lagrangeBasis for interpolation
+    indexes = find(plotPoints >= nodes(minIndex) & plotPoints < nodes(maxIndex));
+    if i == m
+       indexes = [indexes, find(plotPoints == nodes(maxIndex))];
+    end
+    for j = 1 : n + 1
+        baseValues = lagrangeBasis(nodes(minIndex : maxIndex), j, plotPoints(indexes));
+        interpolationValues(indexes) = interpolationValues(indexes) + baseValues * funcSamples(minIndex - 1 + j);
+    end
+
+    % study of degree of preciseness
+    v(i) = getDegreeOfPreciseness(nodes(minIndex), nodes(maxIndex), nodes(minIndex : maxIndex));
+end
+degree = min(v);
 
 % calculate real function values
 funcValues = f(plotPoints);

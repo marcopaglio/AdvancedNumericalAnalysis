@@ -27,8 +27,9 @@ for n = 1 : maxN
     k = 0 : n;
     nodes = a + k * (b - a) / n;
     funcSamples = f(nodes);
-    plotPoints = getPlotPoints(a, b, length(nodes));
-    plotPoints = unique([plotPoints, nodes]);
+    
+    % call Lagrange Interpolation
+    [plotPoints, interpolationValues] = LagrangeInterpolation(a, b, nodes, funcSamples);
     
     % call close Newton-Cotes formula
     integralValue = NewtonCotes(a, b, nodes, funcSamples);
@@ -40,14 +41,7 @@ for n = 1 : maxN
     disp(strcat('For n=', int2str(n), '(', int2str(n+1), ...
                 ' nodes used), integral calculated is: ', num2str(integralValue), ...
                 ' and degree of preciseness is: ', int2str(v), '.'));
-            
-    % call lagrangeBasis for interpolation
-    interpolationValues = zeros(1, length(plotPoints));
-    for j = 1 : n + 1
-        baseValues = lagrangeBasis(n + 1, nodes, j, plotPoints);
-        interpolationValues = interpolationValues + baseValues * funcSamples(j);
-    end
-    
+                
     % evaluate real function
     funcValues = f(plotPoints);
 
