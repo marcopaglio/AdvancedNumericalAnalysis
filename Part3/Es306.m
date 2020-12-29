@@ -19,7 +19,6 @@ f = @(x) 3 * x .^ 4 - 12 * x .^ 3 + x - 1;
 nameFunction = strrep(char(f), '@(x)', ' ');
 nameFunction = erase(nameFunction, '.');
 
-
 % calculate real integral
 realIntegralValue = integral(f, a, b);
 disp(strcat('For ', nameFunction, ' in [', int2str(a), ',', int2str(b), ']'));
@@ -29,8 +28,9 @@ for n = 1 : maxN
     k = 1 : n;
     nodes = a + k * (b - a) / (n + 1);
     funcSamples = f(nodes);
-    plotPoints = getPlotPoints(a, b, length(nodes) + 2);
-    plotPoints = unique([plotPoints, nodes]);
+
+    % call Lagrange Interpolation
+    [plotPoints, interpolationValues] = LagrangeInterpolation(a, b, nodes, funcSamples);
     
     % call close Newton-Cotes formula
     integralValue = NewtonCotes(a, b, nodes, funcSamples);
@@ -42,13 +42,6 @@ for n = 1 : maxN
     disp(strcat('For n=', int2str(n+1), ' (', int2str(n+2), ' nodes and ', int2str(n), ...
                 ' used), integral calculated is: ', num2str(integralValue), ...
                 ' and degree of preciseness is: ', int2str(v), '.'));    
-            
-    % call lagrangeBasis for interpolation
-    interpolationValues = zeros(1, length(plotPoints));
-    for j = 1 : n
-        baseValues = lagrangeBasis(n, nodes, j, plotPoints);
-        interpolationValues = interpolationValues + baseValues * funcSamples(j);
-    end
     
     % evaluate real function
     funcValues = f(plotPoints);

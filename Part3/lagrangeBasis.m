@@ -1,19 +1,16 @@
-function [base_values] = lagrangeBasis(num_nodes, nodes, j, plotPoints)
-    %check input's validity
-    if length(num_nodes) > 1 || length(j) > 1
-        error('One or more scalar input values are not scalar.');
+function [base_values] = lagrangeBasis(nodes, j, plotPoints)
+    % constants
+    num_nodes = length(nodes);
+    
+    % check inputs' validity
+    if length(j) > 1
+        error('Input j must be a scalar value.');
     end
-    if isempty(plotPoints)
-        error('There are not points for plotting.');
-    end
-    if floor(num_nodes) ~= num_nodes || floor(j) ~= j
-        error('Number of nodes or index used are not integer.');
+    if floor(j) ~= j
+        error('Number of nodes or index used is not integer.');
     end
     if num_nodes < 1
         error('Number of nodes cannot be lower than 1.');
-    end
-    if num_nodes ~= length(nodes)
-        error('Your vector does not contain %s nodes', num_nodes);
     end
     if j < 1 || j > num_nodes
         error('Your index %s is out of range. Max value is %s.', j, num_nodes);
@@ -21,9 +18,12 @@ function [base_values] = lagrangeBasis(num_nodes, nodes, j, plotPoints)
     if length(nodes) ~= length(unique(nodes))
         error('There are at least two equal nodes.');
     end
+    if isempty(plotPoints)
+        error('There are not points for plotting.');
+    end
 
-    %calculate base's values
-    base_values = zeros(1, length(plotPoints));                         %space preallocation
+    % calculate base's values
+    base_values = zeros(1, length(plotPoints));
     denominator = 1;
     for i = 1 : num_nodes
         if i ~= j

@@ -13,6 +13,9 @@
 % OBIETTIVO: mostrare che la convergenza al crescere del g.d.p. è solo una 
 %            condizione sufficiente.
 
+% VERSIONE: utilizza compositeNewtonCotes valida per ogni n, m e con
+%           formule aperte e chiuse di Newton-Cotes.
+
 % constants
 a = -pi/2;
 b = pi/2;
