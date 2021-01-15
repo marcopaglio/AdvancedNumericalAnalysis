@@ -5,7 +5,7 @@
 % PRECISAZIONE: peso i-esimo = integrale in [a,b] della base di Lagrange i-esima
 
 x = 0: 30/3 :30;
-weights = getWeights(0, 30, x, 0);
+weights = getWeights(min(x), max(x), x, 0);
 
 disp('For x: ');
 disp(x);
