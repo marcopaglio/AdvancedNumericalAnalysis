@@ -22,6 +22,6 @@ disp(R);
 disp('and b: ');
 disp(b');
 disp('the solution x of linear system Rx=b is: ');
-disp(b);
+disp(x);
 disp('and min||Rx - b||_2 is: ');
 disp(min);

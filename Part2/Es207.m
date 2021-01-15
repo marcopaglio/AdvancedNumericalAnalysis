@@ -3,8 +3,6 @@
 % polinomio di migliore approssimazione ai minimi quadrati di grado n+1 <= m.
 % (Si utilizzi, se utile, la function predefinita del Matlab "vander").
 
-% TODO risolvere con equazioni normali per vedere cosa succede
-
 % constants
 degree = 3;
 
