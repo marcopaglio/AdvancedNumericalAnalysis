@@ -56,11 +56,33 @@ for i = 1 : m
         baseValues = lagrangeBasis(nodes(minIndex : maxIndex), j, plotPoints(indexes));
         interpolationValues(indexes) = interpolationValues(indexes) + baseValues * funcSamples(minIndex - 1 + j);
     end
-
-    % study of degree of preciseness
-    v(i) = getDegreeOfPreciseness(nodes(minIndex), nodes(maxIndex), nodes(minIndex : maxIndex));
 end
-degree = min(v);
+
+% study of degree of preciseness
+numNodesLessOne = length(nodes) - 1;
+epsilon = 0.000001;
+
+isEqual = true(1);
+degree = 0;
+while isEqual
+    polynomialBaseValues = nodes .^ degree;
+    polynomialIntegralValue = polynomialBaseValues(1) + polynomialBaseValues(n * m + 1);
+    polynomialIntegralValue = polynomialIntegralValue + 4 * sum(polynomialBaseValues(2 : 2 : n * m));
+    polynomialIntegralValue = polynomialIntegralValue + 2 * sum(polynomialBaseValues(3 : 2 : n * m));
+    polynomialIntegralValue = polynomialIntegralValue * (b - a) / (3 * n * m);
+    realIntegralValue = (b ^ (degree + 1) - a ^ (degree + 1)) / (degree + 1);
+    distance = abs(realIntegralValue - polynomialIntegralValue);
+    if distance >= epsilon
+        isEqual = ~isEqual;
+        degree = degree - 1;
+    else
+        if degree == 2 * numNodesLessOne + 1
+            isEqual = ~isEqual;
+        else
+            degree = degree + 1;
+        end
+    end
+end
 
 % calculate real function values
 funcValues = f(plotPoints);

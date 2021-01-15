@@ -18,6 +18,7 @@ tau = 1;
 % call adaptive quadrature formula
 [S_2n1, S_n1, maxError, splitPoints] = adaptiveQuadrature(a, b, n, groupBy, f, tau);
 I = ((2 * (groupBy - 1)) ^ 2 * S_2n1 - S_n1) / ((2 * (groupBy - 1)) ^ 2 - 1);
+disp(strcat("I(f) is: ", num2str(I), "."));
 
 % draw function and splits
 t = linspace(0, 4*pi);
