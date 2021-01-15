@@ -5,12 +5,12 @@
 % constants
 num_nodes = 3;
 nodes = 1 : num_nodes;
+a = min(nodes);
+b = max(nodes);
 epsilon0 = (b - a) / 100;
 epsilon1 = epsilon0 / sqrt(2);
 
 %calculate interpolation's points
-a = min(nodes);
-b = max(nodes);
 plotPoints = getPlotPoints(a, b, num_nodes);
 plotPoints = unique([plotPoints, nodes]);
 

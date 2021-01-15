@@ -3,7 +3,7 @@
 % polinomio w_n+1 nell' intervallo dei nodi al variare di n = 4 : 2 : 12.
 
 % constants
-n_values = 4 : 2 : 12;
+numNodes_values = 5 : 2 : 13;
 
 % inputs
 a = input('Choose first extreme: ');
@@ -26,23 +26,23 @@ if a > b
 end
 
 % create Chebyschev nodes and call getMonicPolynomial
-for n_index = 1 : length(n_values)
+for n_index = 1 : length(numNodes_values)
     figure;
         
-    n = n_values(n_index);
-    i = 1 : n;
-    x_i = cos((2 * i - 1) * pi / (2 * n)); % i-1 = 0 .. n-1
+    numNodes = numNodes_values(n_index);
+    i = 1 : numNodes;
+    x_i = cos((2 * i - 1) * pi / (2 * numNodes)); % i-1 = 0 .. n-1
     nodes = x_i * (b - a) / 2 + ((a + b) / 2);
     [plotPoints, monicPolynomialValues] = getMonicPolynomial(nodes, a, b);
     
     %draw monic polynomial
     plot(plotPoints, monicPolynomialValues);
     hold on;
-    plot(nodes, zeros(1, n), '*', 'DisplayName', 'nodes');
+    plot(nodes, zeros(1, numNodes), '*', 'DisplayName', 'nodes');
     
-    title(strcat('Chebyschev monic polynomial w_{', int2str(n), '}(x)'));
+    title(strcat('Chebyschev monic polynomial for n= ', int2str(numNodes-1), '.'));
     xlabel('x');
-    ylabel(strcat('w_{', int2str(n), '}(x)'));
+    ylabel(strcat('w_{', int2str(numNodes), '}(x)'));
     
     hold off;
 end

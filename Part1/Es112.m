@@ -39,7 +39,7 @@ end
 
 % draw real function        
 func_values = 1 ./ (1 + 25 * plotPoints.^2);
-plot(plotPoints, func_values, 'LineWidth', 1.3, 'DisplayName', strcat('1 / 1+25x^{', int2str(2), '}'));
+plot(plotPoints, func_values, '--', 'LineWidth', 1.3, 'DisplayName', strcat('1 / 1+25x^{', int2str(2), '}'));
 legend('-DynamicLegend');
 title(strcat('Bernstein interpolation for 1 / 1+25x^{', int2str(2), '}'));
 xlabel('x');

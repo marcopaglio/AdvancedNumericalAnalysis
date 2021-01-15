@@ -3,7 +3,7 @@
 % polinomio w_n+1 nell' intervallo dei nodi al variare di n = 4 : 2 : 12.
 
 % constants
-n_values = 4 : 2 : 12;
+numNodes_values = 5 : 2 : 13;
 
 % inputs
 a = input('Choose first extreme: ');
@@ -26,22 +26,22 @@ if a > b
 end
 
 % create uniform nodes and call getMonicPolynomial
-for i = 1 : length(n_values)
+for i = 1 : length(numNodes_values)
     figure;
     
-    n = n_values(i);
-    step = (b - a) / (n - 1);
+    numNodes = numNodes_values(i);
+    step = (b - a) / (numNodes - 1);
     nodes = a : step : b;
     [plotPoints, monicPolynomialValues] = getMonicPolynomial(nodes, a, b);
     
     % draw monic polynomial
     plot(plotPoints, monicPolynomialValues);
     hold on;
-    plot(nodes, zeros(1, n), '*', 'DisplayName', 'nodes');
+    plot(nodes, zeros(1, numNodes), '*', 'DisplayName', 'nodes');
     
-    title(strcat('Uniform monic polynomial w_{', int2str(n), '}(x)'));
+    title(strcat('Uniform monic polynomial for n= ', int2str(numNodes-1), '.'));
     xlabel('x');
-    ylabel(strcat('w_{', int2str(n), '}(x)'));
+    ylabel(strcat('w_{', int2str(numNodes), '}(x)'));
     
     hold off;
 end

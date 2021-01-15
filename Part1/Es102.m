@@ -56,7 +56,7 @@ plot(plotPoints, base_values_sum, '--', 'LineWidth', 1.3, 'DisplayName', 'basis 
 hold on;
 plot(nodes, zeros(1, num_nodes), '+', 'LineWidth', 1.5, 'color', 'y', 'DisplayName', 'nodes');
 legend('-DynamicLegend');
-title('Lagrange Bases');
+title(strcat('Lagrange Bases with ', int2str(num_nodes), ' nodes.')); 
 xlabel('x');
 ylabel('l_{j}(x)');
 

@@ -14,16 +14,17 @@ name_f2 = string(f2);
 % constants
 functions = [f1, f2];
 function_names = [name_f1; name_f2];
-max_n = 8;
+max_numNodes = 8;
 a = -5;
 b = 5;
+step = 2;
 
 for index_func = 1 : length(functions)
     figure;
     
-    for n = 2 : 2 : max_n
-        i = 1 : n; 
-        x_i = cos((2 * i - 1) * pi / (2 * n)); % i-1 = 0 .. n-1
+    for numNodes = 2 : step : max_numNodes
+        i = 1 : numNodes; 
+        x_i = cos((2 * i - 1) * pi / (2 * numNodes)); % i-1 = 0 .. n-1
         nodes = x_i * (b - a) / 2 + ((a + b) / 2);
         ordinates = subs(functions(index_func), x, nodes);
         
@@ -31,16 +32,16 @@ for index_func = 1 : length(functions)
         [plotPoints, interpolation_values] = LagrangeInterpolation(a, b, nodes, ordinates);
         
         % draw lagrange interpolation's function        
-        plot(plotPoints, interpolation_values, 'DisplayName', strcat('L_{', int2str(n-1), '}(x)'));
+        plot(plotPoints, interpolation_values, 'DisplayName', strcat('L_{', int2str(numNodes-1), '}(x)'));
         hold on;
-        plot(nodes, ordinates, 'o', 'DisplayName', strcat('n= ', int2str(n), ' nodes'));
+        plot(nodes, ordinates, 'o', 'DisplayName', strcat(int2str(numNodes), ' nodes'));
         legend('-DynamicLegend');
         hold on;        
     end
     
     % draw real function        
     func_values = subs(functions(index_func), x, plotPoints);
-    plot(plotPoints, func_values, 'LineWidth', 1.3, 'DisplayName', function_names(index_func));
+    plot(plotPoints, func_values, '--', 'LineWidth', 1.3, 'DisplayName', function_names(index_func));
     legend('-DynamicLegend');
     title(strcat('Lagrange interpolation with Chebyschev nodes for ', function_names(index_func)));
     xlabel('x');

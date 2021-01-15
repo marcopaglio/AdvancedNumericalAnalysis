@@ -15,18 +15,18 @@ for j = 1 : length(n_values)
     n = n_values(j);
     
     % uniform nodes
-    uniformStep = (b - a) / (n - 1);
+    uniformStep = (b - a) / n;
     nodes = a : uniformStep : b;
     [uniformPlotPoints, uniformMonicPolynomialValues] = getMonicPolynomial(nodes, a, b);
     
     % Chebyschev nodes
-    i = 1 : n;
-    x_i = cos((2 * i - 1) * pi / (2 * n)); % i-1 = 0 .. n-1
+    i = 1 : n + 1;
+    x_i = cos((2 * i - 1) * pi / (2 * (n + 1))); % i-1 = 0 .. n-1
     nodes = (x_i * (b - a) / 2) + ((a + b) / 2);
     [chebyschevPlotPoints, chebyschevMonicPolynomialValues] = getMonicPolynomial(nodes, a, b);
     
     %random nodes
-    nodes = a + rand(1, n) * (b - a);
+    nodes = a + rand(1, n + 1) * (b - a);
     [randomPlotPoints, randomMonicPolynomialValues] = getMonicPolynomial(nodes, a, b);
     
     % draw monic polynomials

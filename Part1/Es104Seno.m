@@ -5,12 +5,12 @@
 % e f(x) = sin(2x(pi_greco)).
 
 % constants
-max_n = 8;
+max_n = 7;
 a = -5;
 b = 5;
 
-for n = 2 : 2 : max_n
-    step = (b - a) / (n - 1);
+for n = 3 : max_n
+    step = (b - a) / n;
     nodes = a : step : b;
     ordinates = sin(2 * pi * nodes);
 
@@ -18,17 +18,16 @@ for n = 2 : 2 : max_n
     [plotPoints, interpolation_values] = LagrangeInterpolation(a, b, nodes, ordinates);
 
     % draw lagrange interpolation's function        
-    nodes_interpolation = strcat('n = ', int2str(n));
-    plot(plotPoints, interpolation_values, 'DisplayName', strcat('L_{', int2str(n-1), '}(x)'));
+    plot(plotPoints, interpolation_values, 'DisplayName', strcat('L_{', int2str(n), '}(x)'));
     hold on;
-    plot(nodes, ordinates, 'o', 'DisplayName', strcat('n= ', int2str(n), ' nodes'));
+    plot(nodes, ordinates, 'o', 'DisplayName', strcat(int2str(n+1), ' nodes'));
     legend('-DynamicLegend');
     hold on;        
 end
 
 % draw real function        
 func_values = sin(2 * pi * plotPoints);
-plot(plotPoints, func_values, 'LineWidth', 1.3, 'DisplayName', 'sin(2*pi*x)');
+plot(plotPoints, func_values, '--', 'LineWidth', 1.3, 'DisplayName', 'sin(2*pi*x)');
 
 legend('-DynamicLegend');
 title('Lagrange interpolation with uniform nodes for sin(2*pi*x)');
