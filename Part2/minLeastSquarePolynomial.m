@@ -1,3 +1,5 @@
+addpath(./Parte1);
+
 function [plotPoints, func_values, min_value] = minLeastSquarePolynomial(nodes, f, n)
     % n is the degree of polynomial
 

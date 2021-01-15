@@ -11,8 +11,7 @@ degree = 9;
 num_nodes = 20;
 n = floor(degree / 2);
 
-i = 0 : num_nodes - 1;
-x = 2 * pi * i / num_nodes;
+x = -5 : 5;
 
 % start working for cos(2X)
 disp('*** cos(2X) ***');
@@ -24,17 +23,12 @@ func_real_values = cos(2 * plotPoints);
 disp('The solution of the least square linear problem is: ');
 disp(min_value);
 
-% calculate functions value analytically
-analytical_func_value = getAnalyticalTrigonometricPolynomial(x, f2, degree, plotPoints);
-
 % draw trigonometric polynomial approximation and the real function
 figure;
 
 plot(plotPoints, func_real_values, 'DisplayName', 'cos(2X)');
 hold on;
 plot(x, f2, 'o', 'DisplayName', strcat('Points (', int2str(num_nodes), ')'));
-hold on;
-plot(plotPoints, analytical_func_value, '.-', 'DisplayName', 'Analytic approximation');
 hold on;
 plot(plotPoints, triPoly_values, '--', 'DisplayName', 'Closeness trigonometric polynomial');
 legend('-DynamicLegend');
